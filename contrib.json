@@ -1,0 +1,130 @@
+{
+  "project": {
+    "owner": "videojs",
+    "name": "video-js-swf",
+    "requirements": [
+      "Unix/Linux (for contrib workflow)",
+      {
+        "name": "git",
+        "info": "http://git-scm.com",
+        "test": "which git"
+      },
+      {
+        "name": "node.js",
+        "info": "http://nodejs.org",
+        "test": "which node"
+      }
+    ]
+  },
+
+  "install": {
+    "desc": "Install dependencies and set up branches",
+    "steps": [
+      {
+        "desc": "Install dependencies",
+        "prompt": "do you want to?"
+      },
+      {
+        "desc": "Install dependencies",
+        "exec": "npm install"
+      },
+      {
+        "desc": "Build distribution",
+        "exec": "grunt"
+      },
+      {
+        "desc": "Get all branches",
+        "exec": "git fetch origin"
+      },
+      {
+        "desc": "Add the upstream project as a remote so new changes can be pulled",
+        "exec": "git remote add upstream https://github.com/videojs/video-js-swf.git"
+      },
+      {
+        "desc": "Get all upstream branches and code",
+        "exec": "git fetch upstream"
+      },
+      {
+        "desc": "Create the stable branch for hotfixes",
+        "exec": "git checkout -b stable origin/stable"
+      },
+      {
+        "desc": "Get any upstream changes from main project",
+        "exec": "git pull upstream stable"
+      },
+      {
+        "desc": "Get any upstream changes to stable in the main project",
+        "exec": "git pull upstream stable"
+      },
+      {
+        "desc": "Switch to the master branch",
+        "exec": "git checkout master"
+      },
+      {
+        "desc": "Get any upstream changes to master in the main project",
+        "exec": "git pull upstream master"
+      }
+    ]
+  },
+
+  "test": {
+    "desc": "Test task",
+    "steps": []
+  },
+
+  "update": {
+    "desc": "Get the latest code and update dependencies",
+    "steps":[
+      {
+        "desc": "Install dependencies",
+        "exec": "npm install"
+      },
+      {
+        "desc": "Build distribution",
+        "exec": "grunt"
+      }
+    ]
+  },
+
+  "contributions": {
+    "feature": {
+      "desc": "Features, fixes, and general enhancements",
+      "start": {
+        "desc": "Start a feature",
+        "steps": [
+          {
+            "desc": "Ask for name",
+            "prompt": {
+              "id": "name",
+              "type": "text",
+              "message": "name?"
+            }
+          },
+          {
+            "desc": "Use the name",
+            "exec": "echo hello <%= name %>"
+          },
+          {
+            "desc": "feature step 1",
+            "exec": "echo feature 1"
+          },
+          {
+            "desc": "feature step 2",
+            "exec": "echo feature 2"
+          },
+          {
+            "desc": "feature step 3",
+            "exec": "echo feature 3"
+          },
+          {
+            "desc": "feature step 4",
+            "exec": "echo feature 4"
+          }
+        ]
+      }
+    },
+    "hotfix": {},
+    "bug": {},
+    "request": {}
+  }
+}

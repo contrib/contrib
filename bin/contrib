@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+'use strict';
+
+var contrib = require('../lib/contrib.js');
+var config = require(process.cwd() + '/contrib.json');
+
+contrib(config, process.argv);

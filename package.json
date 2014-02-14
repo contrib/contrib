@@ -1,0 +1,38 @@
+{
+  "name": "contrib",
+  "version": "0.0.0",
+  "main": "lib/contrib.js",
+  "bin": {
+    "contrib": "./bin/contrib"
+  },
+  "description": "a CLI for standarizing the contribution process across projects",
+  "homepage": "https://github.com/contrib/contrib",
+  "bugs": "https://github.com/contrib/contrib/issues",
+  "author": {
+    "name": "Steve Heffernan",
+    "email": "",
+    "url": "http://heff.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contrib/contrib"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "dependencies": {
+    "shelljs": "~0.2.6",
+    "optimist": "~0.6.0",
+    "commander": "~2.1.0",
+    "grunt": "~0.4.2",
+    "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "sinon": "~1.7.3"
+  }
+}
