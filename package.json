@@ -19,7 +19,7 @@
   },
   "licenses": [
     {
-      "type": "MIT"
+      "type": "Apache"
     }
   ],
   "dependencies": {
