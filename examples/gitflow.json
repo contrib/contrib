@@ -1,0 +1,49 @@
+{
+  "project": {
+    "owner": "example",
+    "name": "gitflow-example",
+    "desc": "An example contrib.json for a git + github + gitflow projet",
+    "requirements": [
+      {
+        "name": "git",
+        "info": "http://git-scm.com",
+        "test": "which git"
+      }
+    ]
+  },
+
+  "install": {
+    "desc": "Install dependencies and set up branches",
+    "steps": [
+      {
+        "desc": "Add the main project as an upstream remote",
+        "exec": "git remote add upstream https://github.com/example/gitflow-example.git"
+      },
+      {
+        "desc": "Fetch the most recent upstream changes",
+        "exec": "git fetch upstream"
+      },
+      {
+        "desc": "Create the local development branch",
+        "exec": "git checkout -b develop origin/develop"
+      },
+      {
+        "desc": "Create the local development branch",
+        "exec": "git checkout -b develop origin/develop"
+      }
+    ]
+  },
+
+  "contributions": {
+    "feature": {
+      "desc": "Features, fixes, and general enhancements",
+      "start": {
+        "desc": "Start a feature",
+        "steps": []
+      }
+    },
+    "hotfix": {},
+    "bug": {},
+    "request": {}
+  }
+}

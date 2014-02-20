@@ -1,9 +1,8 @@
 {
   "project": {
-    "owner": "videojs",
-    "name": "video-js-swf",
+    "owner": "jquery",
+    "name": "jquery",
     "requirements": [
-      "Unix/Linux (for contrib workflow)",
       {
         "name": "git",
         "info": "http://git-scm.com",

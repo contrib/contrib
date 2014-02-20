@@ -2,6 +2,11 @@
 'use strict';
 
 var contrib = require('../lib/contrib.js');
-var config = require(process.cwd() + '/contrib.json');
+var fs = require('fs');
+var config;
+
+if (fs.existsSync('./contrib.json')) {
+  config = JSON.parse(fs.readFileSync('./contrib.json', 'utf8'));
+}
 
 contrib(config, process.argv);
