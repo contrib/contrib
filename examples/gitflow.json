@@ -34,16 +34,14 @@
     ]
   },
 
-  "contributions": {
-    "feature": {
-      "desc": "Features, fixes, and general enhancements",
-      "start": {
-        "desc": "Start a feature",
-        "steps": []
-      }
-    },
-    "hotfix": {},
-    "bug": {},
-    "request": {}
-  }
+  "feature": {
+    "desc": "Features, fixes, and general enhancements",
+    "start": {
+      "desc": "Start a feature",
+      "steps": []
+    }
+  },
+  "hotfix": {},
+  "bug": {},
+  "request": {}
 }

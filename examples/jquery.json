@@ -46,59 +46,43 @@
     ]
   },
 
-  "contributions": {
-    "single": {
+  "feature": {
+    "desc": "Features, fixes, and general enhancements",
+    "start": {
+      "desc": "Start a feature",
       "steps": [
-        { "exec": "echo single task" }
-      ]
-    },
-
-    "multi": {
-      "task": {
-        "steps": [
-          { "exec": "echo multi task" }
-        ]
-      }
-    },
-
-    "feature": {
-      "desc": "Features, fixes, and general enhancements",
-      "start": {
-        "desc": "Start a feature",
-        "steps": [
-          {
-            "desc": "Ask for name",
-            "prompt": {
-              "id": "name",
-              "type": "text",
-              "message": "name?"
-            }
-          },
-          {
-            "desc": "Use the name",
-            "exec": "echo hello <%= name %>"
-          },
-          {
-            "desc": "feature step 1",
-            "exec": "echo feature 1"
-          },
-          {
-            "desc": "feature step 2",
-            "exec": "echo feature 2"
-          },
-          {
-            "desc": "feature step 3",
-            "exec": "echo feature 3"
-          },
-          {
-            "desc": "feature step 4",
-            "exec": "echo feature 4"
+        {
+          "desc": "Ask for name",
+          "prompt": {
+            "id": "name",
+            "type": "text",
+            "message": "name?"
           }
-        ]
-      }
-    },
-    "hotfix": {},
-    "bug": {},
-    "request": {}
-  }
+        },
+        {
+          "desc": "Use the name",
+          "exec": "echo hello <%= name %>"
+        },
+        {
+          "desc": "feature step 1",
+          "exec": "echo feature 1"
+        },
+        {
+          "desc": "feature step 2",
+          "exec": "echo feature 2"
+        },
+        {
+          "desc": "feature step 3",
+          "exec": "echo feature 3"
+        },
+        {
+          "desc": "feature step 4",
+          "exec": "echo feature 4"
+        }
+      ]
+    }
+  },
+  "hotfix": {},
+  "bug": {},
+  "request": {}
 }

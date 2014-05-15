@@ -30,38 +30,6 @@ var log = require('../lib/log');
     test.ifError(value)
 */
 
-// var config = {
-//   install: {
-//     steps: [
-//       {
-//         desc: 'test exec',
-//         exec: 'test exec'
-//       }
-//     ]
-//   },
-//   contributions: {
-//     feature: {
-//       start: {
-//         steps: [
-//           {
-//             desc: "feature step 1",
-//             exec: "exec feature step 1"
-//           }
-//         ]
-//       }
-//     },
-
-//     bug: {
-//       desc: "Submit a bug",
-//       steps: [
-//         {
-//           url: 'http://url'
-//         }
-//       ]
-//     }
-//   }
-// };
-
 exports['contrib'] = {
   setUp: function(done) {
     // create stubs for commands
@@ -99,10 +67,10 @@ exports['contrib'] = {
     test.ok(shell.exec.getCall(0).calledWith('test key exec'), '`test key exec` should be executed');
     shell.exec.reset();
 
-    // prompt
+    // confirm
     contrib({
       update: {
-        steps: [{ prompt: 'my message' }]
+        steps: [{ confirm: 'my message' }]
       }
     }, ['node', 'contrib', 'update' ]);
     test.ok(prompts.confirm.called, '`my message` should be prompted');
@@ -115,9 +83,9 @@ exports['contrib'] = {
       update: {
         steps: [
           { exec: 'exec 1' },
-          { prompt: 'prompt 1' },
+          { confirm: 'prompt 1' },
           { exec: 'exec 2' },
-          { prompt: 'prompt 2' },
+          { confirm: 'prompt 2' },
           { exec: 'exec 3' }
         ]
       }
@@ -131,25 +99,11 @@ exports['contrib'] = {
 
     test.done();
   },
-  'contributions': function(test){
+  'subcommands': function(test){
     contrib({
-      contributions: {
-        feature: { steps: ['feature 1'] }
-      }
-    }, ['node', 'contrib', 'feature' ]);
-
-    test.ok(shell.exec.calledWith('feature 1'), 'feature 1 should be called');
-    shell.exec.reset();
-
-    test.done();
-  },
-  'contribution subcommands': function(test){
-    contrib({
-      contributions: {
-        feature: {
-          new: {
-            steps: ['new 1']
-          }
+      feature: {
+        new: {
+          steps: ['new 1']
         }
       }
     }, ['node', 'contrib', 'feature', 'new' ]);
@@ -182,25 +136,23 @@ exports['contrib'] = {
       update: {
         steps: ['update step']
       },
-      contributions: {
-        feature: {
-          part1: {
-            steps: [
-              'part1 step',
-              { contrib: 'feature part2'  },
-              { contrib: 'update' }
-            ]
-          },
-          part2: {
-            steps: ['part2 step']
-          }
+      feature: {
+        part1: {
+          steps: [
+            'part1 step',
+            { contrib: 'feature part2'  },
+            { contrib: 'update' }
+          ]
+        },
+        part2: {
+          steps: ['part2 step']
         }
       }
     }, ['node', 'contrib', 'feature', 'part1' ]);
 
-    test.ok(shell.exec.calledWith('part1 step'), 'install 1 should be called');
-    test.ok(shell.exec.calledWith('part2 step'), 'update 1 should be called');
-    test.ok(shell.exec.calledWith('update step'), 'update 1 should be called');
+    test.ok(shell.exec.calledWith('part1 step'), 'part 1 should be called');
+    test.ok(shell.exec.calledWith('part2 step'), 'part 2 should be called');
+    test.ok(shell.exec.calledWith('update step'), 'update should be called');
     shell.exec.reset();
 
     test.done();

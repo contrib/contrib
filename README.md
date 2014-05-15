@@ -1,8 +1,8 @@
 # contrib [![Build Status](https://secure.travis-ci.org/contrib/contrib.png?branch=master)](http://travis-ci.org/contrib/contrib)
 
-Simplify the contributon process.
+A simple command runner for standardizing the contribution process.
 
-For a good overview, read [the blog post]().
+<!-- For a good overview, read [the blog post](). -->
 
 Contributing to open source projects today is still too difficult for a lot of people. How do I know this? I've started encouraging bug submitters to help fix their own bugs, and these are common responses I get:
 
@@ -17,7 +17,7 @@ https://github.com/videojs/video.js/issues/673
 
 In all of these cases **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that was the blocker, it was the process and time committment that's required.
 
-The solution is easy, we just get everyone to agree to use the same programming language/version-control/branching-model/task-runner/testing-framework/style-guide/bug-tracker. No problem. But for the time before that happens we need another solution, and I think possibly maybe it could be **contrib**! \</confidence>
+The solution is easy, we just get everyone to agree to use the same programming language/version-control/branching-model/task-runner/testing-framework/style-guide/bug-tracker combination. No problem. But for the time before that happens we need another solution, and I think possibly maybe it could be **contrib**! \</confidence>
 
 Here's a glimpse of the magical (command-line) world I want to live in:
 
@@ -34,14 +34,14 @@ contrib new patch
 # make changes
 contrib submit patch
 
-# contributing to Wordpress (php, svn, NOT github)
+# contributing to Wordpress (php, svn, NOT GITHUB)
 contrib http://develop.svn.wordpress.org/trunk/contrib.json
 contrib new patch
 # make changes
 contrib submit patch
 ```
 
-Contrib builds on a simple idea: Let's standarize and automate the contributing process. 
+Contrib is built on a simple idea: Let's standarize and automate the contributing process. 
 
 If you look at any open soure project, there's a standard set of tasks that need to happen in order to contribute.
 
@@ -56,17 +56,7 @@ Contrib helps contributors contribute, by making the contribution process intera
 
 ## Why use contrib in your project?
 
-> "Want to submit a patch for that?"  
-> "Sorry - I don't use [insert your VCS]." ([ex](https://github.com/videojs/video.js/issues/781))
-
-> Perhaps another time; I'm not familiar with the testing framework and would have to get the whole environment set-up.
-https://github.com/videojs/video.js/issues/603
-
-> Unfortunately I am not familiar with Github processes - so I have no idea of how to make a pull request.
-https://github.com/videojs/video.js/issues/734#issuecomment-36718719
-
 What if you could more easily turn bug submitters into patch contributors?
-
 
 Open source projects share a common core set of tasks that are part of the contributing process, including setting up the project, submitting patches, and discussing bugs and features. However, these tasks may happen very differently between projects depending on the specific language, version control, and other technology and style choices that are made.
 
