@@ -1,0 +1,10 @@
+
+Usage: contrib <%= command %>[command] [options]
+
+Commands:
+<% _.each(cmdLines, function(line) { %>
+  <%= line %><% }); %>
+
+Options:
+<% _.each(optLines, function(line) { %>
+  <%= line %><% }); %>

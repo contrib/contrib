@@ -27,9 +27,8 @@
   },
 
   "test": {
-    "desc": "Test task",
     "steps": [{
-      "exec": "echo test"
+      "prompt": "my message"
     }]
   },
 
@@ -68,9 +67,9 @@
         "desc": "Start a feature",
         "steps": [
           {
+            "id": "name",
             "desc": "Ask for name",
             "prompt": {
-              "id": "name",
               "type": "text",
               "message": "name?"
             }
@@ -99,7 +98,64 @@
       }
     },
     "hotfix": {},
-    "bug": {},
-    "request": {}
+    "bug": {
+      "desc": "Submit a bug report",
+      "steps": [
+        {
+          "id": "title",
+          "prompt": "Title your bug report"
+        },
+        {
+          "id": "reproduce",
+          "prompt": "What did you do? (steps to reproduce)"
+        },
+        {
+          "id": "expected",
+          "prompt": "What did you expect to happen?"
+        },
+        {
+          "id": "actual",
+          "prompt": "What actually happened?"
+        },
+        {
+          "id": "version",
+          "prompt": "What version of contrib are you using?"
+        },
+        {
+          "id": "platforms",
+          "prompt": "What platforms did you experience this on (e.g. Windows 7; Mac OSX 10.9;)?"
+        },
+        {
+          "id": "details",
+          "prompt": "Are there any other details you'd like to provide?"
+        },
+        {
+          "open": "https://github.com/videojs/video.js/issues/new?title=<%= title %>&body=**Steps to reproduce:**\n> <%= reproduce %>\n\n**What was expected:**\n> <%= expected %>\n\n**What Happened:**\n> <%= actual %>\n\n**Version:**\n> <%= version %>\n\n**Platforms experienced on:**\n> <%= platforms %>\n\n**Other details:**\n> <%= details %>"
+        }
+      ]
+    },
+    "request": {
+      "desc": "Submit a feature/enhancement request",
+      "steps": [
+        {
+          "id": "title",
+          "prompt": "Title your request"
+        },
+        {
+          "id": "describe",
+          "prompt": "Describe the feature/enhancement (be as detailed as possible so it's clear who, why, and how it would be used)"
+        },
+        {
+          "id": "examples",
+          "prompt": "Are there any existing examples?"
+        },
+        {
+          "confirm": "You will be redirected to Github where you can submit this issue, OK?"
+        },
+        {
+          "open": "https://github.com/videojs/video.js/issues/new?title=<%= title %>&body=**Describe the feature/enhancement:**\n> <%= describe %>\n\n**Existing docs/specs:**\n> <%= docs %>\n\n**Existing examples:**\n> <%= examples %>"
+        }
+      ]
+    }
   }
 }
