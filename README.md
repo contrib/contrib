@@ -161,15 +161,13 @@ Contrib is configured with a contrib.json file. The basic structure of the file 
       }
     ]
   },
-  "contributions": {
-    "bug": {
-      "steps": [
-        { 
-          "desc": "Open the bug tracker",
-          "open": "http://example.com/submit-bug"
-        }
-      ]
-    }
+  "bug": {
+    "steps": [
+      { 
+        "desc": "Open the bug tracker",
+        "open": "http://example.com/submit-bug"
+      }
+    ]
   }
 }
 ```

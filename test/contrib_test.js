@@ -156,7 +156,22 @@ exports['contrib'] = {
     shell.exec.reset();
 
     test.done();
-  }
+  },
+  'template var interpolation': function(test){
+    contrib({
+      project: {
+        foo: 'world'
+      },
+      install: {
+        steps: ['hello {{ project.foo }}']
+      }
+    }, ['node', 'contrib', 'install' ]);
+
+    test.ok(shell.exec.calledWith('hello world'), 'project var should be used in template');
+    shell.exec.reset();
+
+    test.done();
+  },
   // 'descriptions': function(test){
   //   contrib({
   //     install: {
