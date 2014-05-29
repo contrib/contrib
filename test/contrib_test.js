@@ -5,10 +5,10 @@ var sinon = require('sinon');
 
 // require libs for stubbing
 var shell = require('shelljs');
-var prompts = require('../lib/prompts');
+var prompt = require('../lib/prompt');
 var log = require('../lib/log');
 
-// https://github.com/tschaub/mock-fs?utm_source=nodeweekly&utm_medium=email
+// https://github.com/tschaub/mock-fs
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -33,8 +33,10 @@ var log = require('../lib/log');
 exports['contrib'] = {
   setUp: function(done) {
     // create stubs for commands
-    sinon.stub(shell, 'exec');
-    sinon.stub(prompts, 'confirm').callsArg(1);
+    var exec = sinon.stub(shell, 'exec');
+    exec.returns({ code: 0, output: '' });
+
+    sinon.stub(prompt, 'confirm').callsArg(1);
     sinon.stub(log, 'writeln');
 
     done();
@@ -42,7 +44,7 @@ exports['contrib'] = {
   tearDown: function(done){
     // restore stubs
     shell.exec.restore();
-    prompts.confirm.restore();
+    prompt.confirm.restore();
     log.writeln.restore();
 
     done();
@@ -73,8 +75,8 @@ exports['contrib'] = {
         steps: [{ confirm: 'my message' }]
       }
     }, ['node', 'contrib', 'update' ]);
-    test.ok(prompts.confirm.called, '`my message` should be prompted');
-    prompts.confirm.reset();
+    test.ok(prompt.confirm.called, '`my message` should be prompted');
+    prompt.confirm.reset();
 
     test.done();
   },
@@ -92,9 +94,9 @@ exports['contrib'] = {
     }, ['node', 'contrib', 'update' ]);
 
     test.equal(shell.exec.firstCall.args[0], 'exec 1', 'exec 1 should be 1st');
-    test.equal(prompts.confirm.firstCall.args[0].message, 'prompt 1', 'prompt 1 should be 2nd');
+    test.equal(prompt.confirm.firstCall.args[0].message, 'prompt 1', 'prompt 1 should be 2nd');
     test.equal(shell.exec.secondCall.args[0], 'exec 2', 'exec 2 should be 3rd');
-    test.equal(prompts.confirm.lastCall.args[0].message, 'prompt 2', 'prompt 2 should be 4th');
+    test.equal(prompt.confirm.lastCall.args[0].message, 'prompt 2', 'prompt 2 should be 4th');
     test.equal(shell.exec.lastCall.args[0], 'exec 3', 'exec 3 should be 5th');
 
     test.done();

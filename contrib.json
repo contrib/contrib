@@ -155,5 +155,23 @@
         "open": "https://github.com/videojs/video.js/issues/new?title=<%= title %>&body=**Describe the feature/enhancement:**\n> <%= describe %>\n\n**Existing docs/specs:**\n> <%= docs %>\n\n**Existing examples:**\n> <%= examples %>"
       }
     ]
+  },
+  "exec": {
+    "steps": [ "echo exec" ]
+  },
+  "open": {
+    "steps": [
+      { "open": "http://googl.com" }
+    ]
+  },
+  "get": {
+    "steps": [
+      { "get": "http://googl.com" }
+    ]
+  },
+  "include": {
+    "steps": [
+      { "contrib": "single" }
+    ]
   }
 }
