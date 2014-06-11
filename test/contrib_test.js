@@ -2,6 +2,7 @@
 
 var contrib = require('../lib/contrib.js');
 var sinon = require('sinon');
+var fs = require('fs');
 
 // require libs for stubbing
 var shell = require('shelljs');
@@ -171,6 +172,28 @@ exports['contrib'] = {
 
     test.ok(shell.exec.calledWith('hello world'), 'project var should be used in template');
     shell.exec.reset();
+
+    test.done();
+  },
+  'requirements': function(test){
+    var fixture = fs.readFileSync(__dirname+'/fixtures/requirements.txt', 'utf8');
+
+    contrib({
+      project: {
+        requirements: [
+          'git',
+          {
+            "name": "node.js",
+            "url": "http://nodejs.org"
+          }
+        ]
+      },
+      install: {
+        steps: ['echo foo']
+      }
+    }, ['node', 'contrib', 'install' ]);
+
+    test.ok(log.writeln.calledWith(fixture), 'requirements were listed correctly');
 
     test.done();
   },
