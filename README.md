@@ -15,7 +15,10 @@ Contributing to open source projects today is still too difficult for a lot of p
 > No, thanks. I'm too lazy to fork, download, build and run tests :)
 https://github.com/videojs/video.js/issues/673
 
-In all of these cases **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that was the blocker, it was the process and time committment that's required.
+> Hi. What is PR? :)
+https://github.com/videojs/video.js/issues/1247#issuecomment-44501064
+
+In all of these cases **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that was the blocker, it was the process and time committment that's required to contribute.
 
 The solution is easy, we just get everyone to agree to use the same programming language/version-control/branching-model/task-runner/testing-framework/style-guide/bug-tracker combination. No problem. But for the time before that happens we need another solution, and I think possibly maybe it could be **contrib**! \</confidence>
 
