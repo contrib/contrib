@@ -15,6 +15,9 @@ Contributing to open source projects today is still too difficult for a lot of p
 > No, thanks. I'm too lazy to fork, download, build and run tests :)
 https://github.com/videojs/video.js/issues/673
 
+> Not really sure how...
+https://github.com/videojs/video.js/issues/1297#issuecomment-46308725
+
 > Hi. What is PR? :)
 https://github.com/videojs/video.js/issues/1247#issuecomment-44501064
 

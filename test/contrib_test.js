@@ -58,16 +58,28 @@ exports['contrib'] = {
       install: {
         steps: ['test string exec']
       }
-    }, ['node', 'contrib', 'install' ]);
+    }, ['install']);
     test.ok(shell.exec.getCall(0).calledWith('test string exec'), '`test string exec` should be executed');
     shell.exec.reset();
 
     contrib({
       install: {
-        steps: [{ exec: 'test key exec' }]
+        steps: [
+          { exec: 'test key exec' }
+        ]
       }
-    }, ['node', 'contrib', 'install' ]);
+    }, ['install']);
     test.ok(shell.exec.getCall(0).calledWith('test key exec'), '`test key exec` should be executed');
+    shell.exec.reset();
+
+    contrib({
+      install: {
+        steps: [
+          ['test array exec', 'description']
+        ]
+      }
+    }, ['install']);
+    test.ok(shell.exec.getCall(0).calledWith('test array exec'), '`test array exec` should be executed');
     shell.exec.reset();
 
     // confirm
@@ -75,7 +87,7 @@ exports['contrib'] = {
       update: {
         steps: [{ confirm: 'my message' }]
       }
-    }, ['node', 'contrib', 'update' ]);
+    }, ['update']);
     test.ok(prompt.confirm.called, '`my message` should be prompted');
     prompt.confirm.reset();
 
@@ -92,7 +104,7 @@ exports['contrib'] = {
           { exec: 'exec 3' }
         ]
       }
-    }, ['node', 'contrib', 'update' ]);
+    }, ['update']);
 
     test.equal(shell.exec.firstCall.args[0], 'exec 1', 'exec 1 should be 1st');
     test.equal(prompt.confirm.firstCall.args[0].message, 'prompt 1', 'prompt 1 should be 2nd');
@@ -109,7 +121,7 @@ exports['contrib'] = {
           steps: ['new 1']
         }
       }
-    }, ['node', 'contrib', 'feature', 'new' ]);
+    }, ['feature', 'new']);
 
     test.ok(shell.exec.calledWith('new 1'), 'new 1 should be called');
     shell.exec.reset();
@@ -122,14 +134,14 @@ exports['contrib'] = {
         steps: [
           'install 1',
           {
-            contrib: 'update'
+            include: 'update'
           }
         ]
       },
       update: {
         steps: ['update 1']
       }
-    }, ['node', 'contrib', 'install' ]);
+    }, ['install']);
 
     test.ok(shell.exec.calledWith('install 1'), 'install 1 should be called');
     test.ok(shell.exec.calledWith('update 1'), 'update 1 should be called');
@@ -143,15 +155,15 @@ exports['contrib'] = {
         part1: {
           steps: [
             'part1 step',
-            { contrib: 'feature part2'  },
-            { contrib: 'update' }
+            { include: 'feature part2'  },
+            { include: 'update' }
           ]
         },
         part2: {
           steps: ['part2 step']
         }
       }
-    }, ['node', 'contrib', 'feature', 'part1' ]);
+    }, ['feature', 'part1']);
 
     test.ok(shell.exec.calledWith('part1 step'), 'part 1 should be called');
     test.ok(shell.exec.calledWith('part2 step'), 'part 2 should be called');
@@ -168,7 +180,7 @@ exports['contrib'] = {
       install: {
         steps: ['hello {{ project.foo }}']
       }
-    }, ['node', 'contrib', 'install' ]);
+    }, ['install']);
 
     test.ok(shell.exec.calledWith('hello world'), 'project var should be used in template');
     shell.exec.reset();
@@ -191,7 +203,7 @@ exports['contrib'] = {
       install: {
         steps: ['echo foo']
       }
-    }, ['node', 'contrib', 'install' ]);
+    }, ['install']);
 
     test.ok(log.writeln.calledWith(fixture), 'requirements were listed correctly');
 
@@ -205,7 +217,7 @@ exports['contrib'] = {
   //         exec: 'desc exec'
   //       }]
   //     }
-  //   }, ['node', 'contrib', 'install' ]);
+  //   }, ['install']);
 
   //   test.ok(log.writeln.calledWith('description'), 'description should be written');
 

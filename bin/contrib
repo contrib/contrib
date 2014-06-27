@@ -2,11 +2,16 @@
 'use strict';
 
 var contrib = require('../lib/contrib.js');
+var parseArgs = require('minimist');
 var fs = require('fs');
 var config;
 
-if (fs.existsSync('./contrib.json')) {
-  config = JSON.parse(fs.readFileSync('./contrib.json', 'utf8'));
+// first two args are always [node, contrib]
+var args = parseArgs(process.argv.slice(2));
+var configFile = args.config || './contrib.json';
+
+if (fs.existsSync(configFile)) {
+  config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
 }
 
-contrib(config, process.argv);
+contrib(config, args._, args);
