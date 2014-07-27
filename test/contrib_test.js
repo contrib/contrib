@@ -8,6 +8,7 @@ var fs = require('fs');
 var shell = require('shelljs');
 var prompt = require('../lib/prompt');
 var log = require('../lib/log');
+// var open = require('../lib/open');
 
 // https://github.com/tschaub/mock-fs
 
@@ -224,3 +225,41 @@ exports['contrib'] = {
   //   test.done();
   // }
 };
+
+var openjs = require('open');
+
+exports['open'] = {
+  setUp: function(done) {
+    // create stubs for commands
+    var exec = sinon.stub(shell, 'exec');
+    exec.returns({ code: 0, output: '' });
+
+    sinon.stub(prompt, 'confirm').callsArg(1);
+    sinon.stub(log, 'writeln');
+
+    done();
+  },
+  tearDown: function(done){
+    // restore stubs
+    shell.exec.restore();
+    prompt.confirm.restore();
+    log.writeln.restore();
+
+    done();
+  },
+  'contrib step types': function(test) {
+    // test.expect(1);
+
+    // exec
+    contrib({
+      install: {
+        steps: ['test string exec']
+      }
+    }, ['install']);
+    test.ok(shell.exec.getCall(0).calledWith('test string exec'), '`test string exec` should be executed');
+    shell.exec.reset();
+
+    test.done();
+  }
+};
+

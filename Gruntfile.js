@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     nodeunit: {
-      files: ['test/**/*_test.js']
+      files: ['test/**/*_test.js', '!test/coverage']
     },
     jshint: {
       options: {
@@ -34,6 +34,18 @@ module.exports = function (grunt) {
         files: '<%= jshint.test.src %>',
         tasks: ['jshint:test', 'nodeunit']
       }
+    },
+    coverage: {
+      options: {
+        thresholds: {
+          'statements': 90,
+          'branches': 90,
+          'lines': 90,
+          'functions': 90
+        },
+        dir: 'coverage',
+        root: 'test'
+      }
     }
   });
 
@@ -41,6 +53,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-istanbul-coverage');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'nodeunit']);

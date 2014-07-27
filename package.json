@@ -25,7 +25,7 @@
   "dependencies": {
     "shelljs": "~0.2.6",
     "optimist": "~0.6.0",
-    "grunt": "0.4.2",
+    "grunt": "0.4.5",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
     "handlebars": "~2.0.0-alpha.2",
@@ -37,6 +37,8 @@
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-watch": "~0.5.0",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "grunt-istanbul": "~0.3.0",
+    "grunt-istanbul-coverage": "0.0.5"
   }
 }

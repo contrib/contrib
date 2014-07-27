@@ -20,158 +20,126 @@
   "install": {
     "desc": "Install dependencies and set up branches",
     "steps": [
-      {
-        "exec": "echo install"
-      }
+      [ "git fetch origin",                             "Get all git branches" ],
+      [ "git remote add upstream {{project.urls.git}}", "Add the upstream project as a remote for pulling changes" ],
+      [ "git fetch upstream",                           "Get all upstream branches and changes" ],
+      { "include": "update" }
     ]
   },
 
-  "test": {
-    "steps": [{
-      "prompt": "my message"
-    }]
-  },
+  "setup": [
+    { "confirm": "You will now be taken to Github where you will choose an account to copy the project under." },
+    { "exec": "open https://github.com/videojs/video.js/fork" },
+    { "prompt": "Which account did you choose? (no @)", "id": "owner" },
+    { "exec": "git clone https://github.com/{{owner}}/video.js.git" },
+    { "exec": "cd video.js" }
+  ],
 
   "update": {
     "desc": "Get the latest code and update dependencies",
     "steps":[
-      {
-        "desc": "Install dependencies",
-        "exec": "npm install"
-      },
-      {
-        "desc": "Build distribution",
-        "exec": "grunt"
-      }
+      [ "git checkout master",      "Switch to the master branch" ],
+      [ "git pull upstream master", "Get any changes to the main project" ],
+      [ "git push origin master",   "Push any changes to your remote copy of the main project" ],
+      [ "npm install",              "Install dependencies" ],
+      [ "grunt",                    "Build and run tests" ]
     ]
   },
 
-  "single": {
-    "steps": [
-      { "exec": "echo single task" }
-    ]
-  },
-
-  "multi": {
-    "task": {
-      "steps": [
-        { "exec": "echo multi task" }
-      ]
-    }
-  },
+  "test": [ "grunt test" ],
+  "watch": [ "grunt watch" ],
 
   "feature": {
-    "desc": "Features, fixes, and general enhancements",
+    "desc": "Create a new feature or general enhancement",
     "start": {
-      "desc": "Start a feature",
+      "desc": "Start a new feature",
+      "steps": [{ "include": "code_change start" }]
+    },
+    "submit": {
+      "desc": "Submit a pull request for a feature when it's finished",
+      "steps": [{ "include": "code_change submit" }]
+    },
+    "delete": {
+      "desc": "Delete the current feature branch",
+      "steps": [{ "include": "code_change delete" }]
+    }
+  },
+
+  "patch": {
+    "desc": "Create a new patch or general enhancement",
+    "start": {
+      "desc": "Start a new patch",
+      "steps": [{ "include": "code_change start" }]
+    },
+    "submit": {
+      "desc": "Submit a pull request for a patch when it's finished",
+      "steps": [{ "include": "code_change submit" }]
+    },
+    "delete": {
+      "desc": "Delete the current patch branch",
+      "steps": [{ "include": "code_change delete" }]
+    }
+  },
+
+  "code_change": {
+    "private": true,
+    "start": {
+      "desc": "",
       "steps": [
-        {
-          "id": "name",
-          "desc": "Ask for name",
-          "prompt": {
-            "type": "text",
-            "message": "name?"
-          }
-        },
-        {
-          "desc": "Use the name",
-          "exec": "echo hello <%= name %>"
-        },
-        {
-          "desc": "feature step 1",
-          "exec": "echo feature 1"
-        },
-        {
-          "desc": "feature step 2",
-          "exec": "echo feature 2"
-        },
-        {
-          "desc": "feature step 3",
-          "exec": "echo feature 3"
-        },
-        {
-          "desc": "feature step 4",
-          "exec": "echo feature 4"
-        }
+        { "prompt": "Name the branch",                "id": "name" },
+        { "include": "update" },
+        { "exec": "git checkout -b {{name}} master",  "desc": "Create a branch for the changes" }
+      ]
+    },
+    "submit": {
+      "desc": "Submit a pull request for the changes after they are finished",
+      "steps": [
+        { "exec": "git diff --exit-code",             "desc": "Test for unadded changes {{ args.[0] }}", "fail": "Make sure all changes have been added and committed, or stashed, before switching branches" },
+        { "exec": "git diff --cached --exit-code",    "desc": "Test for uncommitted changes", "fail": "Make sure all changes have been added and committed, or stashed, before switching branches" },
+        { "include": "test" },
+        { "exec": "git rev-parse --abbrev-ref HEAD",  "desc": "Get the current branch", "id": "branch" },
+        { "confirm": "Are you sure {{branch}} is the branch you want to submit?" },
+        { "exec": "git push -u origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
+        { "prompt": "Which github user or org are you submitting from?", "id": "user" },
+        { "open": "{{project.urls.repo_ui}}/compare/videojs:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
+      ]
+    },
+    "delete": {
+      "desc": "Delete the current set of changes",
+      "steps": [
+        { "exec": "git rev-parse --abbrev-ref HEAD", "desc": "Get the current branch name", "id": "name" },
+        { "confirm": "Are you sure '{{name}}' is the branch you want to delete?" },
+        { "exec": "git branch -D {{name}}",          "desc": "Delete the local copy of the branch" },
+        { "exec": "git push origin :{{name}}",       "desc": "Delete the remote copy of the branch" }
       ]
     }
   },
-  "hotfix": {},
-  "bug": {
+
+  "report": {
     "desc": "Submit a bug report",
     "steps": [
-      {
-        "id": "title",
-        "prompt": "Title your bug report"
-      },
-      {
-        "id": "reproduce",
-        "prompt": "What did you do? (steps to reproduce)"
-      },
-      {
-        "id": "expected",
-        "prompt": "What did you expect to happen?"
-      },
-      {
-        "id": "actual",
-        "prompt": "What actually happened?"
-      },
-      {
-        "id": "version",
-        "prompt": "What version of contrib are you using?"
-      },
-      {
-        "id": "platforms",
-        "prompt": "What platforms did you experience this on (e.g. Windows 7; Mac OSX 10.9;)?"
-      },
-      {
-        "id": "details",
-        "prompt": "Are there any other details you'd like to provide?"
-      },
-      {
-        "open": "https://github.com/videojs/video.js/issues/new?title=<%= title %>&body=**Steps to reproduce:**\n> <%= reproduce %>\n\n**What was expected:**\n> <%= expected %>\n\n**What Happened:**\n> <%= actual %>\n\n**Version:**\n> <%= version %>\n\n**Platforms experienced on:**\n> <%= platforms %>\n\n**Other details:**\n> <%= details %>"
-      }
+      { "prompt": "Title your bug report",                   "id": "title" },
+      { "prompt": "What did you do? (steps to reproduce)",   "id": "reproduce" },
+      { "prompt": "What did you expect to happen?",          "id": "expected" },
+      { "prompt": "What actually happened?",                 "id": "actual" },
+      { "prompt": "What version of video.js are you using?", "id": "version" },
+      { "prompt": "Are you using any video.js plugins?",     "id": "plugins" },
+      { "prompt": "What browsers/platforms did you experience this in (e.g. Win 7, IE10; Android 4, Chrome;)?", "id": "browsers" },
+      { "prompt": "Is there a URL to a live example, or a jsbin (e.g. http://jsbin.com/axedog/9999/edit)?",     "id": "example" },
+      { "prompt": "Are there any other details you'd like to provide?",                                         "id": "details" },
+      { "open": "{{project.urls.repo_ui}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Video.js Version:**\n> {{version}}\n\n**Plugins:**\n> {{plugins}}\n\n**Browsers experienced on:**\n> {{browsers}}\n\n**Example:**\n> {{example}}\n\n**Other details:**\n> {{details}}" }
     ]
   },
+
   "request": {
     "desc": "Submit a feature/enhancement request",
     "steps": [
-      {
-        "id": "title",
-        "prompt": "Title your request"
-      },
-      {
-        "id": "describe",
-        "prompt": "Describe the feature/enhancement (be as detailed as possible so it's clear who, why, and how it would be used)"
-      },
-      {
-        "id": "examples",
-        "prompt": "Are there any existing examples?"
-      },
-      {
-        "confirm": "You will be redirected to Github where you can submit this issue, OK?"
-      },
-      {
-        "open": "https://github.com/videojs/video.js/issues/new?title=<%= title %>&body=**Describe the feature/enhancement:**\n> <%= describe %>\n\n**Existing docs/specs:**\n> <%= docs %>\n\n**Existing examples:**\n> <%= examples %>"
-      }
-    ]
-  },
-  "exec": {
-    "steps": [ "echo exec" ]
-  },
-  "open": {
-    "steps": [
-      { "open": "http://googl.com" }
-    ]
-  },
-  "get": {
-    "steps": [
-      { "get": "http://googl.com" }
-    ]
-  },
-  "include": {
-    "steps": [
-      { "contrib": "single" }
+      { "prompt":  "Title your request", "id": "title" },
+      { "prompt":  "Describe the feature/enhancement (be as detailed as possible so it's clear who, why, and how it would be used)", "id": "describe" },
+      { "prompt":  "Is there any existing documentation or related specifications?", "id": "docs" },
+      { "prompt":  "Are there any existing examples?", "id": "examples" },
+      { "confirm": "You will be redirected to Github where you can submit this issue, OK?" },
+      { "open": "{{project.urls.repo_ui}}/issues/new?title={{ title }}&body=**Describe the feature/enhancement:**\n> {{ describe }}\n\n**Existing docs/specs:**\n> {{ docs }}\n\n**Existing examples:**\n> {{ examples }}" }
     ]
   }
 }
