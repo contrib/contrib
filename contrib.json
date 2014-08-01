@@ -1,47 +1,48 @@
 {
   "project": {
-    "owner": "videojs",
-    "name": "video-js-swf",
+    "name": "contrib",
+    "repo": "https://github.com/contrib/contrib",
     "requirements": [
-      "Unix/Linux (for contrib workflow)",
       {
         "name": "git",
-        "info": "http://git-scm.com",
-        "test": "which git"
+        "home": "http://git-scm.com"
       },
       {
         "name": "node.js",
-        "info": "http://nodejs.org",
-        "test": "which node"
+        "home": "http://nodejs.org"
       }
     ]
   },
 
   "install": {
-    "desc": "Install dependencies and set up branches",
+    "desc": "Fork, download, and setup the project",
     "steps": [
-      [ "git fetch origin",                             "Get all git branches" ],
-      [ "git remote add upstream {{project.urls.git}}", "Add the upstream project as a remote for pulling changes" ],
-      [ "git fetch upstream",                           "Get all upstream branches and changes" ],
+      { "confirm": "You will now be taken to Github where you will choose an account to fork the project under." },
+      { "exec": "open {{repo}}/fork" },
+      { "prompt": "Which account did you choose? (no '@')", "id": "owner" },
+      { "exec": "git clone https://github.com/{{owner}}/contrib.git" },
+      { "exec": "cd contrib" },
+      { "include": "setup" }
+    ]
+  },
+
+  "setup": {
+    "desc": "Set up version control and install dependencies",
+    "steps": [
+      [ "git fetch origin",                      "Get all git branches" ],
+      [ "git remote add upstream {{repo}}.git",  "Add the upstream project as a remote for pulling changes" ],
+      [ "git fetch upstream",                    "Get all upstream branches and changes" ],
       { "include": "update" }
     ]
   },
 
-  "setup": [
-    { "confirm": "You will now be taken to Github where you will choose an account to copy the project under." },
-    { "exec": "open https://github.com/videojs/video.js/fork" },
-    { "prompt": "Which account did you choose? (no @)", "id": "owner" },
-    { "exec": "git clone https://github.com/{{owner}}/video.js.git" },
-    { "exec": "cd video.js" }
-  ],
-
   "update": {
-    "desc": "Get the latest code and update dependencies",
+    "desc": "Get the latest copy of the code",
     "steps":[
       [ "git checkout master",      "Switch to the master branch" ],
       [ "git pull upstream master", "Get any changes to the main project" ],
-      [ "git push origin master",   "Push any changes to your remote copy of the main project" ],
-      [ "npm install",              "Install dependencies" ],
+      [ "git push origin master",   "Push any changes to your remote copy of the project" ],
+      [ "npm install",              "Install any new dependencies" ],
       [ "grunt",                    "Build and run tests" ]
     ]
   },
@@ -101,7 +102,7 @@
         { "confirm": "Are you sure {{branch}} is the branch you want to submit?" },
         { "exec": "git push -u origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
         { "prompt": "Which github user or org are you submitting from?", "id": "user" },
-        { "open": "{{project.urls.repo_ui}}/compare/videojs:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
+        { "open": "{{repo}}/compare/contrib:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
       ]
     },
     "delete": {
@@ -122,12 +123,10 @@
       { "prompt": "What did you do? (steps to reproduce)",   "id": "reproduce" },
       { "prompt": "What did you expect to happen?",          "id": "expected" },
       { "prompt": "What actually happened?",                 "id": "actual" },
-      { "prompt": "What version of video.js are you using?", "id": "version" },
-      { "prompt": "Are you using any video.js plugins?",     "id": "plugins" },
-      { "prompt": "What browsers/platforms did you experience this in (e.g. Win 7, IE10; Android 4, Chrome;)?", "id": "browsers" },
-      { "prompt": "Is there a URL to a live example, or a jsbin (e.g. http://jsbin.com/axedog/9999/edit)?",     "id": "example" },
+      { "prompt": "What version of contrib are you using?", "id": "version" },
+      { "prompt": "What platforms did you experience this in (e.g. Win 7; Mac OS 10.7)?", "id": "platforms" },
       { "prompt": "Are there any other details you'd like to provide?",                                         "id": "details" },
-      { "open": "{{project.urls.repo_ui}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Video.js Version:**\n> {{version}}\n\n**Plugins:**\n> {{plugins}}\n\n**Browsers experienced on:**\n> {{browsers}}\n\n**Example:**\n> {{example}}\n\n**Other details:**\n> {{details}}" }
+      { "open": "{{repo}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
     ]
   },
 
