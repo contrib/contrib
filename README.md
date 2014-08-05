@@ -1,8 +1,6 @@
 # contrib
 
-a command-line interface for standardizing the contribution tasks between projects
-
-<!-- For a good overview, read [the blog post](). -->
+a command-line utility for standardizing the contribution process between projects
 
 ## Features
 - Works with any programming language
@@ -12,7 +10,7 @@ a command-line interface for standardizing the contribution tasks between projec
 
 ## Background
 
-Contributing to open source projects today requires a lot of process that many potential contributors (maybe most) are not familiar with.
+Contributing to open source projects requires a lot of process that many potential contributors are not familiar with.
 
 > "Sorry - I don't use git." ([video.js#781](https://github.com/videojs/video.js/issues/781))  
 
@@ -26,11 +24,49 @@ Contributing to open source projects today requires a lot of process that many p
 
 > Hi. What is PR? :) ([video.js#1247](https://github.com/videojs/video.js/issues/1247#issuecomment-44501064))
 
-In all of these examples **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that was the blocker, it was the requirement of knowing the tools and having the time to set up the project correctly.
+In all of these examples **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
 
-The solution is easy &mdash; everyone needs to agree to use the same programming language, version control, branching model, task runner, testing framework, style-guide, and bug-tracker. Since that won't ever happen, the other option is to provide a common interface for contributors to interact with projects.
+The solution is easy &mdash; everyone needs to agree to use the same programming language, version control, branching model, task runner, testing framework, and style-guide. Since that's unlikely to happen, the other option is to provide a common interface for contributors to interact with projects.
 
-This is what contrib is meant to be. With contrib a contributor can get set up and help out quickly, while also learning a project's specific tasks, version control commands, and other processes as they go.
+This is what **contrib** is meant to be. With contrib a contributor can get set up and help out quickly, while also learning a project's specific tasks, version control commands, and other processes as they go.
+
+## Example
+
+In a project that uses contrib, a contributor could use the following commands to quickly set up the project and submit a change.
+
+```bash
+contrib install https://github.com/main/project/contrib.json
+contrib feature start
+[write code]
+contrib feature submit
+```
+
+For the `contrib install` command, a typical Github project might be configured to walk the contributor through the following steps (however steps are completely configuratble).
+
+```
+STEP 1. Choose a Github user to fork under (create a remote copy of the project)
+$ open https://github.com/main/project/fork
+
+STEP 2 (ID: user). Which account did you choose?
+prompt: myUser
+
+STEP 3. Copy the project locally
+$ git clone https://github.com/myUser/project.git
+
+STEP 4. Change to the project directory
+$ cd project
+
+STEP 5. Add the main project as remote repo called "upstream" for getting updates
+$ git remote add upstream https://github.com/main/project.git
+
+STEP 6. Install software dependencies
+$ [npm/gem/pip/bower/etc] install
+
+STEP 7. Build the project
+$ [make/grunt/rake/ant/cake/etc]
+```
+
+The other commands can be configured similarly to update the project, create branches, run tests, submit pull requests, etc.
 
 ## Getting Started
 
@@ -53,7 +89,11 @@ This will show you the available commands for the project and how to use them.
 
 ## Configuring
 
-Run `contrib init` to generate a contrib.json file with some suggested commands.
+Run contrib init to generate a contrib.json file with some suggested commands.
+
+```
+contrib init
+```
 
 > NOTE: The quickest way to get started is probably to copy an existing contrib.json from another project that has a similar workflow, and then modify it for your needs.
 
@@ -291,6 +331,66 @@ Include all steps from another command within the current command. In the follow
   }
 }
 ```
+
+## Standard Commands
+
+The specific contrib commands that are ultimately available in a project is completely up to the project owner. There's nothing stopping someone from creating completely custom commands and even using contrib outside of the open source project context. However when using with open source, the following commands (if included) should work as described.
+
+> When you run `contrib init` it will create a contrib.json that includes these functions as described.
+
+### install [contrib.json URL]
+Copy/fork, download/clone, and set up the project. When install is run, contrib will load the given contrib.json and perform the install steps defined in it.
+
+### setup
+Set up version control and install dependencies. Set up is its own command and also included in the `install` command using the [include step definition](#include).
+
+### update
+Get the latest changes to the code from the main project and update dependencies.
+
+### test
+Run automated tests
+
+## Common Commands
+In early projects using contrib you will see many of the following commands. They're based on common git + Github workflows so they may not work with projects that don't use those tools. And it's too early to say they're standard either way so feel free to experiment with and suggest different versions. The important thing is that you describe what your commands do so that when a contributor runs the `contrib` command they will be able to find what they're looking for.
+
+### feature/patch
+Commands around writing code for the project. 
+- A feature would be any kind of enhancement and would usually be merged into the development branch.
+- A patch (or hotfix) is for fixing an urgent bug and would usually be merged into the release branch.
+
+If you're using the [gitflow](http://nvie.com/posts/a-successful-git-branching-model/) model you might have feature and hotfix commands. If you're using [Github Flow](https://guides.github.com/introduction/flow/index.html) you might just have feature commands. And if you're using subversion, mercurial or another version controls software, you might have something very different.
+
+##### feature/patch subcommands
+
+```bash
+contrib feature start
+contrib feature submit
+contrib feature delete
+```
+
+- Start: Update the project and create a new branch for the feature
+- Submit: Submitting the code for review (create a pull request)
+- Delete: Delete a feature if it's been accepted or no longer needed
+
+### report
+Submit a bug report. This command can be useful for having contributors answer specific questions before submitting a report (especially with Github issues).
+
+### request
+Submit a feature/enhancement request.
+
+### question
+Submit a question. This command can help contributors discover where a project prefers they ask questions. It may be Stack Overflow, a forum, a mailing list, or somewhere else.
+
+### build
+
+Build the program (if appropriate)
+
+### server
+
+Start a local server for testing
+
+### watch
+Run a script that watches for code changes while developing and updates the project and/or runs tests.
 
 ## Goals/Roadmap
 - Generate user-friendly contribution guides (e.g. CONTRIBUTING.md) from the config

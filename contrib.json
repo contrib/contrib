@@ -18,7 +18,7 @@
     "desc": "Fork, download, and setup the project",
     "steps": [
       { "confirm": "You will now be taken to Github where you will choose an account to fork the project under." },
-      { "exec": "open {{repo}}/fork" },
+      { "exec": "open {{project.repo}}/fork" },
       { "prompt": "Which account did you choose? (no '@')", "id": "owner" },
       { "exec": "git clone https://github.com/{{owner}}/contrib.git" },
       { "exec": "cd contrib" },
@@ -30,7 +30,7 @@
     "desc": "Set up version control and install dependencies",
     "steps": [
       [ "git fetch origin",                      "Get all git branches" ],
-      [ "git remote add upstream {{repo}}.git",  "Add the upstream project as a remote for pulling changes" ],
+      [ "git remote add upstream {{project.repo}}.git",  "Add the upstream project as a remote for pulling changes" ],
       [ "git fetch upstream",                    "Get all upstream branches and changes" ],
       { "include": "update" }
     ]
@@ -102,7 +102,7 @@
         { "confirm": "Are you sure {{branch}} is the branch you want to submit?" },
         { "exec": "git push -u origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
         { "prompt": "Which github user or org are you submitting from?", "id": "user" },
-        { "open": "{{repo}}/compare/contrib:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
+        { "open": "{{project.repo}}/compare/contrib:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
       ]
     },
     "delete": {
@@ -126,7 +126,7 @@
       { "prompt": "What version of contrib are you using?", "id": "version" },
       { "prompt": "What platforms did you experience this in (e.g. Win 7; Mac OS 10.7)?", "id": "platforms" },
       { "prompt": "Are there any other details you'd like to provide?",                                         "id": "details" },
-      { "open": "{{repo}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
+      { "open": "{{project.repo}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
     ]
   },
 
