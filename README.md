@@ -81,11 +81,17 @@ npm install contrib --global
 ```
 
 ## Usage
-Run the `contrib` command at the root of a project directory where a contrib.json file exists. See [Configuring](#configuring) for information on creating a contrib.json.
+Run the `contrib` command at the root of a project directory where a contrib.json file exists. This will show you the available commands for the project and how to use them. 
 
     contrib
 
-This will show you the available commands for the project and how to use them.
+Commands are used like so
+
+    contrib [command] [options]
+
+For example
+
+    contrib foo --dry-run
 
 ## Configuring
 
@@ -143,18 +149,7 @@ The project object in the config file holds meta data for the project.
 - requirements (optional) An array of objects that describe project requirements
 
 ### Commands
-Any key of the main object besides "project" is considered a command. In its simplest form a command is just an array of command-line tasks to execute. The following example command would be run with `contrib example`, and would print out `hello` and then `world`.
-
-```json
-{
-  "example": [
-    "echo hello",
-    "echo world"
-  ]
-}
-```
-
-You can also create a command as an object with a "steps" array to allow you to also provide a description ("desc") of the command. The description is displayed both when running the command and in `contrib help`.
+Any key of the main object besides "project" is considered a command. A command is defined with an object that has a description ("desc") and an array of steps. The description is displayed both when starting the command and in the help display. The steps array is a list of the command line scripts or built-in actions (e.g. prompt) that should be performed in order. The following example command would be run with `contrib example`, and would write out `hello` and then `world`.
 
 ```json
 {
@@ -167,6 +162,18 @@ You can also create a command as an object with a "steps" array to allow you to 
   }
 }
 ```
+
+The previous command configuration can also be simplifed to just an array of the steps, however this drops the description which can be very valuable for other users.
+
+```json
+{
+  "example": [
+    "echo hello",
+    "echo world"
+  ]
+}
+```
+
 
 ### Subcommands
 Commands can also be set up to have subcommands. The following subcommands would be run with `contrib feature start` and `contrib feature submit`.
@@ -201,7 +208,6 @@ Steps are the sequential actions that make up a command. A step can have an acti
 - Description ("desc"): A description of what happens in the step
 - ID ("id"): A reference to the output of the step, for use in later steps
 
-
 ```json
 {
   "example": {
@@ -214,7 +220,7 @@ Steps are the sequential actions that make up a command. A step can have an acti
 }
 ```
 
-> NOTE: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json formatting.
+> NOTE: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json/javascript formatting, but can make a big difference.
 
 If a step is defined as a string, it's assumed it's an "exec" action and the string is the command-line script/task to run.
 
@@ -281,13 +287,22 @@ Run the given command-line script or task. If an ID is provided the trimmed outp
 ```json
 {
   "steps": [
-    { "exec": "COMMAND TO RUN" }
+    { "exec": "task/command-line script" }
   ]
 }
 ```
 
 #### prompt
-Prompt steps ask the user for some type of information. The step description is the question to ask the user.
+Prompt steps ask the user for some type of information. The step description is the question to ask or a description of the information the user should enter. If you include an ID for the step the user's response can be used in a later step.
+
+```json
+{
+  "steps": [
+    { "prompt": "text", "desc": "What is your name?", "id": "name" },
+    { "exec": "echo Your name is {{name}}" }
+  ]
+}
+```
 
 ##### prompt: text
 
@@ -296,14 +311,14 @@ An open ended text input.
 ```json
 {
   "steps": [
-    { "prompt": "text", "desc": "What is your name?" }
+    { "prompt": "text", "desc": "What is your name?", "id": "name" }
   ]
 }
 ```
 
 ##### prompt: confirm
 
-Ask a question with a yes or no answer. A "no" response will immediately end the command, so no other steps will be performed.
+Ask a question with a yes or no answer. A "no" response will immediately end the command and no other steps will be performed.
 
 ```json
 {

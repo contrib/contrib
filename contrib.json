@@ -140,5 +140,10 @@
       { "confirm": "You will be redirected to Github where you can submit this issue, OK?" },
       { "open": "{{project.urls.repo_ui}}/issues/new?title={{ title }}&body=**Describe the feature/enhancement:**\n> {{ describe }}\n\n**Existing docs/specs:**\n> {{ docs }}\n\n**Existing examples:**\n> {{ examples }}" }
     ]
-  }
+  },
+
+  "example": [
+    { "exec": "echo hello", "id": "step1" },
+    "echo {{ step1 }}"
+  ]
 }
