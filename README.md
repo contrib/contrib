@@ -3,10 +3,10 @@
 a command-line utility for standardizing the contribution process between projects
 
 ## Features
-- Works with any programming language
-- Works on Windows/Mac/Linux
-- Works with any version control software
-- Works with any task runner
+- works with any programming language
+- works on Windows/Mac/Linux
+- works with any version control software
+- works with any task runner
 
 ## Background
 
@@ -70,7 +70,7 @@ The other commands can be configured similarly to update the project, create bra
 
 ## Getting Started
 
-Contrib currently requires Node.js (hoping to someday make it a stand-alone package)<br>
+Contrib currently requires Node.js (a goal is to make it a stand-alone package)<br>
 <a href="http://nodejs.org">Download and Install Node.js</a>
 
 Once Node.js is installed on your system you can install contrib globally.
@@ -81,7 +81,7 @@ npm install contrib --global
 ```
 
 ## Usage
-Run the `contrib` command at the root of a project directory where a contrib.json file exists. This will show you the available commands for the project and how to use them. 
+Run the `contrib` command at the root of a project directory where a **contrib.json** file exists. This will show you the available commands for the project and how to use them. 
 
     contrib
 
@@ -107,7 +107,7 @@ The basic structure of a contrib.json file looks like this:
 
 ```json
 {
-  "project": {
+  "meta": {
     "name": "my-project",
     "requirements": [
       { 
@@ -149,6 +149,11 @@ The project object in the config file holds meta data for the project.
 - requirements (optional) An array of objects that describe project requirements
 
 ### Commands
+
+```
+contrib [command]
+```
+
 Any key of the main object besides "project" is considered a command. A command is defined with an object that has a description ("desc") and an array of steps. The description is displayed both when starting the command and in the help display. The steps array is a list of the command line scripts or built-in actions (e.g. prompt) that should be performed in order. The following example command would be run with `contrib example`, and would write out `hello` and then `world`.
 
 ```json
@@ -176,6 +181,11 @@ The previous command configuration can also be simplifed to just an array of the
 
 
 ### Subcommands
+
+```
+contrib [command] [subcommand]
+```
+
 Commands can also be set up to have subcommands. The following subcommands would be run with `contrib feature start` and `contrib feature submit`.
 
 ```json
@@ -417,7 +427,7 @@ Run a script that watches for code changes while developing and updates the proj
 
 Contrib is not meant to replace existing task runners or do everything a task runner can. It is meant to be a mapping of common processes to existing project-specific tasks and commands.
 
-Contrib is meant to teach the underlying commands (not hide them) while also allowing the contributor to be immediately productive.
+Contrib is meant to teach the underlying tasks and processes (not hide them) while also allowing the contributor to be immediately productive.
 
 
 ## License

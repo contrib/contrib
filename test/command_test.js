@@ -114,6 +114,26 @@ exports['command_test'] = {
     test.equal(Exec.do.getCall(1).args[0].exec, 'feature step 2', 'second subcommand step executed');
 
     test.done();
+  },
+  'include': function(test) {
+    contrib({
+      "foo": {
+        "steps": [
+          { "exec": "echo hello" },
+          { "include": "bar" }
+        ]
+      },
+      "bar": {
+        "steps": [
+          { "exec": "echo world" }
+        ]
+      }
+    }, ['foo']);
+
+    test.equal(Exec.do.getCall(0).args[0].exec, 'echo hello', 'first step executed');
+    test.equal(Exec.do.getCall(1).args[0].exec, 'echo world', 'included step executed correctly');
+
+    test.done();
   }
 };
 
