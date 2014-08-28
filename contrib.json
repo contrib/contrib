@@ -87,7 +87,7 @@
     "start": {
       "desc": "",
       "steps": [
-        { "prompt": "Name the branch",                "id": "name" },
+        { "prompt": "text",                            "desc": "Name the branch", "id": "name" },
         { "include": "update" },
         { "exec": "git checkout -b {{name}} master",  "desc": "Create a branch for the changes" }
       ]
@@ -99,9 +99,9 @@
         { "exec": "git diff --cached --exit-code",    "desc": "Test for uncommitted changes", "fail": "Make sure all changes have been added and committed, or stashed, before switching branches" },
         { "include": "test" },
         { "exec": "git rev-parse --abbrev-ref HEAD",  "desc": "Get the current branch", "id": "branch" },
-        { "confirm": "Are you sure {{branch}} is the branch you want to submit?" },
+        { "prompt": "confirm",                        "desc": "Are you sure {{branch}} is the branch you want to submit?" },
         { "exec": "git push -u origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
-        { "prompt": "Which github user or org are you submitting from?", "id": "user" },
+        { "prompt": "text",                           "desc": "Which github user or org are you submitting from?", "id": "user" },
         { "open": "{{project.repo}}/compare/contrib:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
       ]
     },
@@ -109,7 +109,7 @@
       "desc": "Delete the current set of changes",
       "steps": [
         { "exec": "git rev-parse --abbrev-ref HEAD", "desc": "Get the current branch name", "id": "name" },
-        { "confirm": "Are you sure '{{name}}' is the branch you want to delete?" },
+        { "prompt": "confirm",                       "desc": "Are you sure '{{name}}' is the branch you want to delete?" },
         { "exec": "git branch -D {{name}}",          "desc": "Delete the local copy of the branch" },
         { "exec": "git push origin :{{name}}",       "desc": "Delete the remote copy of the branch" }
       ]
@@ -119,13 +119,13 @@
   "report": {
     "desc": "Submit a bug report",
     "steps": [
-      { "prompt": "Title your bug report",                   "id": "title" },
-      { "prompt": "What did you do? (steps to reproduce)",   "id": "reproduce" },
-      { "prompt": "What did you expect to happen?",          "id": "expected" },
-      { "prompt": "What actually happened?",                 "id": "actual" },
-      { "prompt": "What version of contrib are you using?", "id": "version" },
-      { "prompt": "What platforms did you experience this in (e.g. Win 7; Mac OS 10.7)?", "id": "platforms" },
-      { "prompt": "Are there any other details you'd like to provide?",                                         "id": "details" },
+      { "prompt": "text", "desc": "Title your bug report",                                         "id": "title" },
+      { "prompt": "text", "desc": "What did you do? (steps to reproduce)",                         "id": "reproduce" },
+      { "prompt": "text", "desc": "What did you expect to happen?",                                "id": "expected" },
+      { "prompt": "text", "desc": "What actually happened?",                                       "id": "actual" },
+      { "prompt": "text", "desc": "What version of contrib are you using?",                        "id": "version" },
+      { "prompt": "text", "desc": "What platforms did you experience this in (e.g. Mac OS 10.7)?", "id": "platforms" },
+      { "prompt": "text", "desc": "Are there any other details you'd like to provide?",            "id": "details" },
       { "open": "{{project.repo}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
     ]
   },
@@ -133,11 +133,11 @@
   "request": {
     "desc": "Submit a feature/enhancement request",
     "steps": [
-      { "prompt":  "Title your request", "id": "title" },
-      { "prompt":  "Describe the feature/enhancement (be as detailed as possible so it's clear who, why, and how it would be used)", "id": "describe" },
-      { "prompt":  "Is there any existing documentation or related specifications?", "id": "docs" },
-      { "prompt":  "Are there any existing examples?", "id": "examples" },
-      { "confirm": "You will be redirected to Github where you can submit this issue, OK?" },
+      { "prompt": "text",    "desc": "Title your request", "id": "title" },
+      { "prompt": "text",    "desc": "Describe the feature/enhancement (be as detailed as possible so it's clear who, why, and how it would be used)", "id": "describe" },
+      { "prompt": "text",    "desc": "Is there any existing documentation or related specifications?", "id": "docs" },
+      { "prompt": "text",    "desc": "Are there any existing examples?", "id": "examples" },
+      { "prompt": "confirm", "desc": "You will be redirected to Github where you can submit this issue, OK?" },
       { "open": "{{project.urls.repo_ui}}/issues/new?title={{ title }}&body=**Describe the feature/enhancement:**\n> {{ describe }}\n\n**Existing docs/specs:**\n> {{ docs }}\n\n**Existing examples:**\n> {{ examples }}" }
     ]
   },
