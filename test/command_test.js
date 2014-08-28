@@ -98,6 +98,16 @@ exports['command_test'] = {
 
     test.done();
   },
+  'command defined with string': function(test) {
+    contrib({
+      example: 'echo hello world'
+    }, ['example']);
+
+    test.ok(Exec.do.getCall(0), 'first step executed');
+    test.equal(Exec.do.getCall(0).args[0].exec, 'echo hello world', 'command defined as string was executed');
+
+    test.done();
+  },
   'subcommands': function(test) {
     contrib({
       "feature": {

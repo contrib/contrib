@@ -6,15 +6,15 @@ var parseArgs = require('minimist');
 var fs = require('fs');
 
 // first two args are always [node, contrib]
-var allArgs = parseArgs(process.argv.slice(2));
-var commands = allArgs._;
-var options = allArgs;
+var args = parseArgs(process.argv.slice(2));
+var commands = args._;
+var options = args;
 
-var config;
 var configFile = options.config || './contrib.json';
+var configObj;
 
 if (fs.existsSync(configFile)) {
-  config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+  configObj = JSON.parse(fs.readFileSync(configFile, 'utf8'));
 }
 
-contrib(config, commands, options);
+contrib(configObj, commands, options);

@@ -179,6 +179,14 @@ The previous command configuration can also be simplifed to just an array of the
 }
 ```
 
+Finally for very simple command-to-task translations, a string can be used to define the command.
+
+```json
+{
+  "test": "taskrunner test"
+}
+```
+
 
 ### Subcommands
 
@@ -209,6 +217,9 @@ Commands can also be set up to have subcommands. The following subcommands would
   }
 }
 ```
+
+> NOTE: A subcommand must be defined using and object with a `steps` key. A string or array cannot be used like for top level commands.
+
 
 ### Steps
 

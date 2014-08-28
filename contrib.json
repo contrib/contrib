@@ -17,9 +17,9 @@
   "install": {
     "desc": "Fork, download, and setup the project",
     "steps": [
-      { "confirm": "You will now be taken to Github where you will choose an account to fork the project under." },
+      { "prompt": "confirm", "desc": "You will now be taken to Github where you will choose an account to fork the project under." },
       { "exec": "open {{project.repo}}/fork" },
-      { "prompt": "Which account did you choose? (no '@')", "id": "owner" },
+      { "prompt": "text", "desc": "Which account did you choose? (no '@')", "id": "owner" },
       { "exec": "git clone https://github.com/{{owner}}/contrib.git" },
       { "exec": "cd contrib" },
       { "include": "setup" }
@@ -47,8 +47,8 @@
     ]
   },
 
-  "test": [ "grunt test" ],
-  "watch": [ "grunt watch" ],
+  "test": "grunt test",
+  "watch": "grunt watch",
 
   "feature": {
     "desc": "Create a new feature or general enhancement",
@@ -142,8 +142,5 @@
     ]
   },
 
-  "example": [
-    { "exec": "echo hello", "id": "step1" },
-    "echo {{ step1 }}"
-  ]
+  "example": "echo hi"
 }
