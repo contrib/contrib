@@ -95,7 +95,7 @@ For example
 
 ## Configuring
 
-Run contrib init to generate a contrib.json file with some suggested commands.
+Run `contrib init` to generate a contrib.json file with some suggested commands.
 
 ```
 contrib init
@@ -108,36 +108,34 @@ The basic structure of a contrib.json file looks like this:
 ```json
 {
   "meta": {
-    "name": "my-project",
-    "requirements": [
-      { 
-        "name": "example requirement",
-        "home": "http://example.com"
-      }
+    "project": {
+      "name": "my-project",
+      "requirements": [
+        { 
+          "name": "example requirement",
+          "home": "http://example.com"
+        }
+      ]
+    }
+  },
+  "install": {
+    "desc": "Download and set up the project",
+    "steps": [
+      { "exec": "echo First install step!", "desc": "Example first install step" },
+      { "include": "setup" }
     ]
   },
   "setup": {
-    "desc": "Setup version control and install dependencies",
-    "steps": [
-      { "exec": "echo First setup step!", "desc": "Example first setup step" }
-    ]
+    "desc": "Set up version control and install dependencies",
+    "steps": []
   },
-  "feature": {
-    "desc": "Example command for creating a feature",
-    
-    "start": {
-      "desc": "Start building a new feature",
-      "steps": [
-        { "exec": "echo Starting Feature" }
-      ]
-    },
-    
-    "submit": {
-      "desc": "Submit a finished feature",
-      "steps": [
-        { "exec": "echo Submitting Feature" }
-      ]
-    }
+  "update": {
+    "desc": "Get the latest copy of the code",
+    "steps": []
+  },
+  "test": {
+    "desc": "Run programmatic tests"
+    "steps": []
   }
 }
 ```
