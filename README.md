@@ -2,11 +2,11 @@
 
 a command-line utility for standardizing the contribution process between projects
 
-## Features
-- works with any programming language
-- works on Windows/Mac/Linux
-- works with any version control software
-- works with any task runner
+## Compatibility
+- any programming language
+- any version control software
+- any task runner
+- Windows/Mac/Linux
 
 ## Background
 
@@ -26,7 +26,7 @@ Contributing to open source projects requires a lot of process that many potenti
 
 In all of these examples **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
 
-The solution is easy &mdash; everyone needs to agree to use the same programming language, version control, branching model, task runner, testing framework, and style-guide. Since that's unlikely to happen, the other option is to provide a common interface for contributors to interact with projects.
+The solution is easy &mdash; everyone needs to agree to use the same programming language, version control, branching model, task runner, and testing framework. Since that's unlikely to happen, an alternative is to provide a common interface for contributors to interact with projects.
 
 This is what **contrib** is meant to be. With contrib a contributor can get set up and help out quickly, while also learning a project's specific tasks, version control commands, and other processes as they go.
 
@@ -44,10 +44,10 @@ contrib feature submit
 For the `contrib install` command, a typical Github project might be configured to walk the contributor through the following steps (however steps are completely configuratble).
 
 ```
-STEP 1. Choose a Github user to fork under (create a remote copy of the project)
+STEP 1. Fork the main project (create your own remote copy)
 $ open https://github.com/main/project/fork
 
-STEP 2 (ID: user). Which account did you choose?
+STEP 2 (ID: user). Which account is the fork under?
 prompt: myUser
 
 STEP 3. Copy the project locally
@@ -63,7 +63,7 @@ STEP 6. Install software dependencies
 $ [npm/gem/pip/bower/etc] install
 
 STEP 7. Build the project
-$ [make/grunt/rake/ant/cake/etc]
+$ [make/rake/grunt/ant/cake/etc]
 ```
 
 The other commands can be configured similarly to update the project, create branches, run tests, submit pull requests, etc.
@@ -83,23 +83,21 @@ npm install contrib --global
 ## Usage
 Run the `contrib` command at the root of a project directory where a **contrib.json** file exists. This will show you the available commands for the project and how to use them. 
 
-    contrib
+    $ contrib
 
 Commands are used like so
 
-    contrib [command] [options]
+    $ contrib [command] [options]
 
 For example
 
-    contrib foo --dry-run
+    $ contrib foo --dry-run
 
 ## Configuring
 
 Run `contrib init` to generate a contrib.json file with some suggested commands.
 
-```
-contrib init
-```
+    $ contrib init
 
 > NOTE: The quickest way to get started is probably to copy an existing contrib.json from another project that has a similar workflow, and then modify it for your needs.
 
@@ -108,15 +106,13 @@ The basic structure of a contrib.json file looks like this:
 ```json
 {
   "meta": {
-    "project": {
-      "name": "my-project",
-      "requirements": [
-        { 
-          "name": "example requirement",
-          "home": "http://example.com"
-        }
-      ]
-    }
+    "name": "my-project",
+    "requirements": [
+      { 
+        "name": "example requirement",
+        "home": "http://example.com"
+      }
+    ]
   },
   "install": {
     "desc": "Download and set up the project",
@@ -140,19 +136,35 @@ The basic structure of a contrib.json file looks like this:
 }
 ```
 
-### Project
-The project object in the config file holds meta data for the project.
+### Meta
+The meta object in the config file holds metadata for the project. The metadata can be used in commands.
 
-- name (required) The name of the project
-- requirements (optional) An array of objects that describe project requirements
+```json
+{
+  "meta": {
+    "name": "my-project"
+  },
+  "say-name": {
+    "desc": "Echo the project name",
+    "steps": [ 
+      "echo The name of the project is {{ meta.name }}" 
+    ]
+  }
+}
+```
+
+    $ contrib say-name
+    -> The name of the project is my-project
+
+Common meta object keys include:
+- name: The name of the project
+- requirements: An array of objects that describe project requirements
 
 ### Commands
 
-```
-contrib [command]
-```
+    $ contrib [command]
 
-Any key of the main object besides "project" is considered a command. A command is defined with an object that has a description ("desc") and an array of steps. The description is displayed both when starting the command and in the help display. The steps array is a list of the command line scripts or built-in actions (e.g. prompt) that should be performed in order. The following example command would be run with `contrib example`, and would write out `hello` and then `world`.
+Any key of the main config object besides `meta` is considered a command. A command is defined with an object that has a description ("desc") and an array of steps. The description is displayed both when starting the command and in the help display. The steps array is a list of the command line scripts or built-in actions (e.g. prompt) that should be performed in order. The following example command would be run with `contrib example`, and would write out `hello` and then `world`.
 
 ```json
 {
@@ -166,7 +178,8 @@ Any key of the main object besides "project" is considered a command. A command 
 }
 ```
 
-The previous command configuration can also be simplifed to just an array of the steps, however this drops the description which can be very valuable for other users.
+The previous command configuration can also be simplifed to just an array of the steps.
+> NOTE: this drops the description which can be very valuable for users even if the command seems obvious.
 
 ```json
 {
@@ -188,9 +201,8 @@ Finally for very simple command-to-task translations, a string can be used to de
 
 ### Subcommands
 
-```
-contrib [command] [subcommand]
-```
+    $ contrib [command] [subcommand]
+
 
 Commands can also be set up to have subcommands. The following subcommands would be run with `contrib feature start` and `contrib feature submit`.
 
@@ -239,7 +251,7 @@ Steps are the sequential actions that make up a command. A step can have an acti
 }
 ```
 
-> NOTE: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json/javascript formatting, but can make a big difference.
+> NOTE: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json/javascript formatting, but can make a big difference with larger command sets.
 
 If a step is defined as a string, it's assumed it's an "exec" action and the string is the command-line script/task to run.
 
@@ -254,7 +266,8 @@ If a step is defined as a string, it's assumed it's an "exec" action and the str
   }
 }
 ```
-An alternative (but less familiar) method is to define the step as an array. In this case it's assumed the first item is the "exec" action, the second item is the description, and the third item is the ID. This format can help simplify commands that are long lists of exec actions with descriptions. 
+
+An alternative (but less obvious) method is to define the step as an array. In this case it's assumed the first item is the "exec" action, the second item is the description, and the third item is the ID. This format can help simplify commands that are long lists of exec actions with descriptions. 
 
 ```json
 {
