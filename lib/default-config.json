@@ -1,15 +1,16 @@
 {
   "meta": {
-    "repo": ""
+    "name": "",
+    "org": ""
   },
 
   "install": {
     "desc": "Fork, download, and setup the project",
     "steps": [
-      { "prompt": "confirm", "desc": "You will now be taken to Github where you will choose an account to fork the project under. Remember which account you choose." },
-      { "exec": "open {{meta.repo}}/fork" },
+      { "prompt":   "confirm", "desc": "You will now be taken to Github where you will choose an account to fork the project under. Remember which account you choose." },
+      { "exec": "open https://github.com/{{meta.org}}/{{meta.name}}/fork" },
       { "prompt": "text", "desc": "Which account did you choose? (no '@')", "id": "owner" },
-      { "exec": "git clone https://github.com/{{ owner }}/{{ meta.name }}.git" },
+      { "exec":     "git clone https://github.com/{{ owner }}/{{ meta.name }}.git" },
       { "exec": "cd {{ meta.name }}" },
       { "include": "setup" }
     ]
@@ -19,7 +20,7 @@
     "desc": "Set up version control and install dependencies",
     "steps": [
       [ "git fetch origin",                      "Get all git branches" ],
-      [ "git remote add upstream {{meta.repo}}.git",  "Add the upstream project as a remote for pulling changes" ],
+      [ "git remote add upstream https://github.com/{{meta.org}}/{{meta.name}}.git",  "Add the upstream project as a remote for pulling changes" ],
       [ "git fetch upstream",                    "Get all upstream branches and changes" ],
       { "include": "update" }
     ]
@@ -30,9 +31,7 @@
     "steps":[
       [ "git checkout master",      "Switch to the master branch" ],
       [ "git pull upstream master", "Get any changes to the main project" ],
-      [ "git push origin master",   "Push any changes to your remote copy of the project" ],
-      [ "npm install",              "Install any new dependencies" ],
-      [ "grunt",                    "Build and run tests" ]
+      [ "git push origin master",   "Push any changes to your remote copy of the project" ]
     ]
   },
 
@@ -43,7 +42,8 @@
       "steps": [
         { "prompt": "text",                            "desc": "Name the branch", "id": "name" },
         { "include": "update" },
-        { "exec": "git checkout -b {{name}} master",  "desc": "Create a branch for the changes" }
+        { "exec": "git checkout -b {{name}} master",  "desc": "Create a branch for the changes" },
+        { "exec": "git push -u origin {{name}}",  "desc": "Push the branch to your remote fork and set up tracking" }
       ]
     },
     "submit": {
@@ -51,19 +51,19 @@
       "steps": [
         { "exec": "git diff --exit-code",             "desc": "Test for unadded changes {{ args.[0] }}", "fail": "Make sure all changes have been added and committed, or stashed, before switching branches" },
         { "exec": "git diff --cached --exit-code",    "desc": "Test for uncommitted changes", "fail": "Make sure all changes have been added and committed, or stashed, before switching branches" },
-        { "include": "test" },
         { "exec": "git rev-parse --abbrev-ref HEAD",  "desc": "Get the current branch", "id": "branch" },
         { "prompt": "confirm",                        "desc": "Are you sure {{branch}} is the branch you want to submit?" },
-        { "exec": "git push -u origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
+        { "exec": "git push origin {{branch}}",    "desc": "Push the branch to your remote copy of the project" },
         { "prompt": "text",                           "desc": "Which github user or org are you submitting from?", "id": "user" },
-        { "open": "{{meta.repo}}/compare/{{meta.org}}:{{baseBranch}}...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
+        { "open": "https://github.com/{{meta.org}}/{{meta.name}}/compare/{{meta.org}}:master...{{user}}:{{branch}}", "desc": "Open the github pull request page" }
       ]
     },
-    "delete": {
-      "desc": "Delete the current feature branch",
+    "accepted": {
+      "desc": "Delete your copy of the changes after they have been accepted",
       "steps": [
         { "exec": "git rev-parse --abbrev-ref HEAD", "desc": "Get the current branch name", "id": "name" },
         { "prompt": "confirm",                       "desc": "Are you sure '{{name}}' is the branch you want to delete?" },
+        { "exec": "git checkout master",             "desc": "Change to a different branch so the current branch can be deleted" },
         { "exec": "git branch -D {{name}}",          "desc": "Delete the local copy of the branch" },
         { "exec": "git push origin :{{name}}",       "desc": "Delete the remote copy of the branch" }
       ]
@@ -80,7 +80,7 @@
       { "prompt": "text", "desc": "What version are you using?",                        "id": "version" },
       { "prompt": "text", "desc": "What platforms did you experience this in (e.g. Mac OS 10.7)?", "id": "platforms" },
       { "prompt": "text", "desc": "Are there any other details you'd like to provide?",            "id": "details" },
-      { "open": "{{meta.repo}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
+      { "open": "https://github.com/{{meta.org}}/{{meta.name}}/issues/new?title={{title}}&body=**Steps to reproduce:**\n> {{reproduce}}\n\n**What was expected:**\n> {{expected}}\n\n**What Happened:**\n> {{actual}}\n\n**Version:**\n> {{version}}\n\n**Platforms experienced on:**\n> {{platforms}}\n\n**Other details:**\n> {{details}}" }
     ]
   },
 

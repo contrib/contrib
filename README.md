@@ -1,6 +1,6 @@
 # contrib
 
-a command-line utility for standardizing the contribution process between projects
+a command-line utility for simplifying the contribution process between software projects
 
 ## Compatibility
 - any programming language
@@ -12,76 +12,53 @@ a command-line utility for standardizing the contribution process between projec
 
 Contributing to open source projects requires a lot of process that many potential contributors are not familiar with.
 
-> "Sorry - I don't use git." ([video.js#781](https://github.com/videojs/video.js/issues/781))  
+> Sorry - I don't use git. ([video.js#781](https://github.com/videojs/video.js/issues/781))  
 
-> "Perhaps another time; I'm not familiar with the testing framework and would have to get the whole environment set-up." ([video.js#603](https://github.com/videojs/video.js/issues/603))
+> Perhaps another time; I'm not familiar with the testing framework and would have to get the whole environment set-up. ([video.js#603](https://github.com/videojs/video.js/issues/603))
 
-> "Unfortunately I am not familiar with Github processes" ([video.js#734](https://github.com/videojs/video.js/issues/734#issuecomment-36718719))
+> Unfortunately I am not familiar with Github processes ([video.js#734](https://github.com/videojs/video.js/issues/734#issuecomment-36718719))
 
 > No, thanks. I'm too lazy to fork, download, build and run tests :) ([video.js#673](https://github.com/videojs/video.js/issues/673))
 
-> Not really sure how... ([video.js#1297](https://github.com/videojs/video.js/issues/1297#issuecomment-46308725))
-
 > Hi. What is PR? :) ([video.js#1247](https://github.com/videojs/video.js/issues/1247#issuecomment-44501064))
 
-In all of these examples **the commenter helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
+> Not really sure how... ([video.js#1297](https://github.com/videojs/video.js/issues/1297#issuecomment-46308725))
 
-The solution is easy &mdash; everyone needs to agree to use the same programming language, version control, branching model, task runner, and testing framework. Since that's unlikely to happen, an alternative is to provide a common interface for contributors to interact with projects.
+In all of these examples **the person commenting helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
+
+The solution is easy -- everyone needs to agree to use the same programming language, version control, branching model, task runner, and testing framework. Since that's unlikely to happen, an alternative is to provide a common interface for contributors to interact with different projects.
 
 This is what **contrib** is meant to be. With contrib a contributor can get set up and help out quickly, while also learning a project's specific tasks, version control commands, and other processes as they go.
 
 ## Example
 
-In a project that uses contrib, a contributor could use the following commands to quickly set up the project and submit a change.
-
 ```bash
-contrib install https://github.com/main/project/contrib.json
-contrib feature start
+$ contrib install twbs/bootstrap
+$ contrib feature start
+
 [write code]
-contrib feature submit
+
+$ contrib feature submit
 ```
 
-For the `contrib install` command, a typical Github project might be configured to walk the contributor through the following steps (however steps are completely configuratble).
+With the previous commands, contrib will help you [fork](https://help.github.com/articles/fork-a-repo/), [clone](http://git-scm.com/docs/git-clone), start a new [branch](http://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), and submit your changes as a [pull request](https://help.github.com/articles/using-pull-requests/). In many cases it will even run build scripts and automated tests. At the same time, contrib will show you the underlying git, github, and other tasks needed to perform the same steps manually. So you can either learn as you go, or just speed through the process.
 
-```
-STEP 1. Fork the main project (create your own remote copy)
-$ open https://github.com/main/project/fork
-
-STEP 2 (ID: user). Which account is the fork under?
-prompt: myUser
-
-STEP 3. Copy the project locally
-$ git clone https://github.com/myUser/project.git
-
-STEP 4. Change to the project directory
-$ cd project
-
-STEP 5. Add the main project as remote repo called "upstream" for getting updates
-$ git remote add upstream https://github.com/main/project.git
-
-STEP 6. Install software dependencies
-$ [npm/gem/pip/bower/etc] install
-
-STEP 7. Build the project
-$ [make/rake/grunt/ant/cake/etc]
-```
-
-The other commands can be configured similarly to update the project, create branches, run tests, submit pull requests, etc.
+> NOTE: By default, contrib works with any project on Github, using the most common contributor workflows. However any project *off* Github, with any version control, can be set up to support contrib. And all projects (including on Github) can be [configured](#configure) with custom contributor workflows.
 
 ## Getting Started
 
-Contrib currently requires Node.js (a goal is to make it a stand-alone package)<br>
+Contrib currently requires Node.js (a [goal](https://github.com/contrib/contrib/issues/1) is to make it a stand-alone package)<br>
 <a href="http://nodejs.org">Download and Install Node.js</a>
 
-Once Node.js is installed on your system you can install contrib globally.
-> NOTE: If you get permissions errors use `sudo` before the command
+Once Node.js is installed on your system you can install contrib as a command-line tool.
+> NOTE: If you get permissions errors on a unix/linux/mac system, add `sudo` before the command
 
 ```
 npm install contrib --global
 ```
 
 ## Usage
-Run the `contrib` command at the root of a project directory where a **contrib.json** file exists. This will show you the available commands for the project and how to use them. 
+Run the `contrib` command at the root of a project directory. This will show you the available commands for the project and how to use them.
 
     $ contrib
 
@@ -92,6 +69,19 @@ Commands are used like so
 For example
 
     $ contrib foo --dry-run
+
+## Options
+
+Flags | Description
+----- | -----------
+-h, --help             | Output usage information
+-i, --interactive      | Confirm each step before executing it
+-d, --dry-run          | Output all steps but do not execute them
+-s, --step [step]      | Specify a single step to execute
+-b, --begin [step]     | Specify a step to begin at
+-e, --end [step]       | Specify a step to stop after
+-v, --version          | Output the contrib version number
+
 
 ## Configuring
 
@@ -108,7 +98,7 @@ The basic structure of a contrib.json file looks like this:
   "meta": {
     "name": "my-project",
     "requirements": [
-      { 
+      {
         "name": "example requirement",
         "home": "http://example.com"
       }
@@ -146,8 +136,8 @@ The meta object in the config file holds metadata for the project. The metadata 
   },
   "say-name": {
     "desc": "Echo the project name",
-    "steps": [ 
-      "echo The name of the project is {{ meta.name }}" 
+    "steps": [
+      "echo The name of the project is {{ meta.name }}"
     ]
   }
 }
@@ -210,14 +200,14 @@ Commands can also be set up to have subcommands. The following subcommands would
 {
   "feature": {
     "desc": "Example command for creating a feature",
-    
+
     "start": {
       "desc": "Start building a new feature",
       "steps": [
         "echo Starting Feature"
       ]
     },
-    
+
     "submit": {
       "desc": "Submit a finished feature",
       "steps": [
@@ -267,7 +257,7 @@ If a step is defined as a string, it's assumed it's an "exec" action and the str
 }
 ```
 
-An alternative (but less obvious) method is to define the step as an array. In this case it's assumed the first item is the "exec" action, the second item is the description, and the third item is the ID. This format can help simplify commands that are long lists of exec actions with descriptions. 
+An alternative (but less obvious) method is to define the step as an array. In this case it's assumed the first item is the "exec" action, the second item is the description, and the third item is the ID. This format can help simplify commands that are long lists of exec actions with descriptions.
 
 ```json
 {
@@ -282,7 +272,7 @@ An alternative (but less obvious) method is to define the step as an array. In t
 ```
 
 #### Step Description
-The description is shown for each step after the step number. 
+The description is shown for each step after the step number.
 
 > NOTE: It's best to provide a description for most steps so that project contributors can be learning the project's tools as they use contrib.
 
@@ -401,7 +391,7 @@ Run automated tests
 In early projects using contrib you will see many of the following commands. They're based on common git + Github workflows so they may not work with projects that don't use those tools. And it's too early to say they're standard either way so feel free to experiment with and suggest different versions. The important thing is that you describe what your commands do so that when a contributor runs the `contrib` command they will be able to find what they're looking for.
 
 ### feature/patch
-Commands around writing code for the project. 
+Commands around writing code for the project.
 - A feature would be any kind of enhancement and would usually be merged into the development branch.
 - A patch (or hotfix) is for fixing an urgent bug and would usually be merged into the release branch.
 
