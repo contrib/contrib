@@ -1,11 +1,11 @@
-# contrib
+# contrib (cli)
 
-a command-line utility for simplifying the contribution process between software projects
+a command-line utility for simplifying the contribution process of software projects
 
 ## Compatibility
-- any programming language
-- any version control software
-- any task runner
+- Any programming language
+- Any version control software
+- Any task runner
 - Windows/Mac/Linux
 
 ## Background
@@ -24,7 +24,7 @@ Contributing to open source projects requires a lot of process that many potenti
 
 > Not really sure how... ([video.js#1297](https://github.com/videojs/video.js/issues/1297#issuecomment-46308725))
 
-In all of these examples **the person commenting helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
+In all of these examples **the person helped solve the issue**, so it wasn't a lack of ability or willingness to help that blocked them, it was the requirement of knowing the tools and having the time to set up the project correctly.
 
 The solution is easy -- everyone needs to agree to use the same programming language, version control, branching model, task runner, and testing framework. Since that's unlikely to happen, an alternative is to provide a common interface for contributors to interact with different projects.
 
@@ -41,34 +41,47 @@ $ contrib feature start
 $ contrib feature submit
 ```
 
-With the previous commands, contrib will help you [fork](https://help.github.com/articles/fork-a-repo/), [clone](http://git-scm.com/docs/git-clone), start a new [branch](http://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), and submit your changes as a [pull request](https://help.github.com/articles/using-pull-requests/). In many cases it will even run build scripts and automated tests. At the same time, contrib will show you the underlying git, github, and other tasks needed to perform the same steps manually. So you can either learn as you go, or just speed through the process.
+With the previous commands, contrib will help you [fork](https://help.github.com/articles/fork-a-repo/), [clone](http://git-scm.com/docs/git-clone), start a new [branch](http://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), and submit your changes as a [pull request](https://help.github.com/articles/using-pull-requests/). In many cases it will even run build scripts and automated tests. At the same time, contrib will show you the underlying git, github, and/or other tasks needed to perform the same steps manually. So you can either learn as you go or just speed through the process.
 
-> NOTE: By default, contrib works with any project on Github, using the most common contributor workflows. However any project *off* Github, with any version control, can be set up to support contrib. And all projects (including on Github) can be [configured](#configure) with custom contributor workflows.
+> Note: By default, contrib works with any project on Github, using the most common contributor workflows. However, projects can [create custom workflows](#configure), including projects not hosted on Github.
 
 ## Getting Started
 
-Contrib currently requires Node.js (a [goal](https://github.com/contrib/contrib/issues/1) is to make it a stand-alone package)<br>
+Contrib currently requires node.js and npm ([a goal](https://github.com/contrib/contrib/issues/1) is to make it a stand-alone package)<br>
 <a href="http://nodejs.org">Download and Install Node.js</a>
 
 Once Node.js is installed on your system you can install contrib as a command-line tool.
-> NOTE: If you get permissions errors on a unix/linux/mac system, add `sudo` before the command
+> Note: If you get permissions errors on a unix/linux/mac system, add `sudo` before the command
 
-```
-npm install contrib --global
-```
+    npm install contrib --global
+
 
 ## Usage
-Run the `contrib` command at the root of a project directory. This will show you the available commands for the project and how to use them.
+To download the source code of a project and set it up for contributions, use the `contrib install` command.
 
-    $ contrib
+    contrib install [PROJECT OR contrib.json URL]
+    
+    # If on Github you can use the 'org/project' name
+    contrib install twbs/bootstrap
+
+    # If not on Github, use the URL of the project's contrib.json file
+    contrib install http://example.com/source/contrib.json
+
+After you have the source code you will need to move into the source code direcotory.
+
+    cd [PROJECT DIR]
+
+At the root of the project directory, run the `contrib` command. This will show you the available commands for the project and how to use them. While there's a suggested set of common commands, a project can completely customize which commands are available and what they do.
+
+    contrib
 
 Commands are used like so
 
-    $ contrib [command] [options]
+    contrib [command] [options]
 
-For example
+    # For example
+    contrib foo --dry-run
 
-    $ contrib foo --dry-run
 
 ## Options
 
@@ -87,9 +100,9 @@ Flags | Description
 
 Run `contrib init` to generate a contrib.json file with some suggested commands.
 
-    $ contrib init
+    contrib init
 
-> NOTE: The quickest way to get started is probably to copy an existing contrib.json from another project that has a similar workflow, and then modify it for your needs.
+> Note: The quickest way to get started is probably to copy an existing contrib.json from another project that has a similar workflow, and then modify it for your needs.
 
 The basic structure of a contrib.json file looks like this:
 
@@ -152,7 +165,7 @@ Common meta object keys include:
 
 ### Commands
 
-    $ contrib [command]
+    contrib [command]
 
 Any key of the main config object besides `meta` is considered a command. A command is defined with an object that has a description ("desc") and an array of steps. The description is displayed both when starting the command and in the help display. The steps array is a list of the command line scripts or built-in actions (e.g. prompt) that should be performed in order. The following example command would be run with `contrib example`, and would write out `hello` and then `world`.
 
@@ -169,7 +182,7 @@ Any key of the main config object besides `meta` is considered a command. A comm
 ```
 
 The previous command configuration can also be simplifed to just an array of the steps.
-> NOTE: this drops the description which can be very valuable for users even if the command seems obvious.
+> Note: this drops the description which can be very valuable for users even if the command seems obvious.
 
 ```json
 {
@@ -191,7 +204,7 @@ Finally for very simple command-to-task translations, a string can be used to de
 
 ### Subcommands
 
-    $ contrib [command] [subcommand]
+    contrib [command] [subcommand]
 
 
 Commands can also be set up to have subcommands. The following subcommands would be run with `contrib feature start` and `contrib feature submit`.
@@ -218,7 +231,7 @@ Commands can also be set up to have subcommands. The following subcommands would
 }
 ```
 
-> NOTE: A subcommand must be defined using and object with a `steps` key. A string or array cannot be used like for top level commands.
+> Note: A subcommand must be defined using and object with a `steps` key. A string or array cannot be used like for top level commands.
 
 
 ### Steps
@@ -241,7 +254,7 @@ Steps are the sequential actions that make up a command. A step can have an acti
 }
 ```
 
-> NOTE: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json/javascript formatting, but can make a big difference with larger command sets.
+> Note: We define most steps in a single line to line-up the actions for easy reading, and to keep the length of the contrib.json from getting too long. This is different from typical json/javascript formatting, but can make a big difference with larger command sets.
 
 If a step is defined as a string, it's assumed it's an "exec" action and the string is the command-line script/task to run.
 
@@ -274,7 +287,7 @@ An alternative (but less obvious) method is to define the step as an array. In t
 #### Step Description
 The description is shown for each step after the step number.
 
-> NOTE: It's best to provide a description for most steps so that project contributors can be learning the project's tools as they use contrib.
+> Note: It's best to provide a description for most steps so that project contributors can be learning the project's tools as they use contrib.
 
 Here is how the description from the first step in the hello world example would look.
 
@@ -425,9 +438,6 @@ Build the program (if appropriate)
 ### server
 
 Start a local server for testing
-
-### watch
-Run a script that watches for code changes while developing and updates the project and/or runs tests.
 
 ## Goals/Roadmap
 - Generate user-friendly contribution guides (e.g. CONTRIBUTING.md) from the config
