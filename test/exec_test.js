@@ -41,24 +41,26 @@ exports['exec_test'] = {
 
     done();
   },
-  'spawn': function(test) {
-    test.expect(2);
-
-    var step = {
-      exec: 'echo hi',
-      command: {
-        options: {},
-        data: {}
-      }
-    };
-
-    Exec.do(step, function(){
-      test.ok('callback fired');
-    });
-
-    test.deepEqual(child_process.spawn.getCall(0).args, ['echo', ['hi']], 'spawn called with correct args');
-
-    test.done();
-  }
+  
+  // Currently Switching between exec and spawn to see which is better
+  // 'spawn': function(test) {
+  //   test.expect(2);
+  // 
+  //   var step = {
+  //     exec: 'echo hi',
+  //     command: {
+  //       options: {},
+  //       data: {}
+  //     }
+  //   };
+  // 
+  //   Exec.do(step, function(){
+  //     test.ok('callback fired');
+  //   });
+  // 
+  //   test.deepEqual(child_process.spawn.getCall(0).args, ['echo', ['hi']], 'spawn called with correct args');
+  // 
+  //   test.done();
+  // }
 };
 
