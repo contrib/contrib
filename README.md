@@ -133,7 +133,7 @@ The basic structure of a contrib.json file looks like this:
     "steps": []
   },
   "test": {
-    "desc": "Run programmatic tests"
+    "desc": "Run programmatic tests",
     "steps": []
   }
 }
