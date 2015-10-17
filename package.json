@@ -29,7 +29,7 @@
     "handlebars": "~2.0.0-alpha.2",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
-    "node-proxy": "~0.9.0",
+    "node-proxy": "~1.0.0",
     "open": "0.0.5",
     "optimist": "~0.6.0",
     "prompt": "~0.2.13",
